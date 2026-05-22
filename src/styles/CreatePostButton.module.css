@@ -1,0 +1,22 @@
+.btn_create {
+  border: none;
+  font-weight: var(--fw-bold);
+  border-radius: 0.75rem;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  background-color: transparent;
+}
+
+.btn_create:hover {
+  color: var(--clr-accent-400);
+}
+
+.btn_create span {
+  margin-left: 0.5rem;
+}
+
+@media (width < 765px) {
+  .btn_create {
+    border: none;
+    font-size: var(--fs-500);
+  }
+}

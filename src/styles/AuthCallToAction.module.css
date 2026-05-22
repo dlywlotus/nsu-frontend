@@ -1,0 +1,35 @@
+.link {
+  color: var(--clr-accent-400);
+  cursor: pointer;
+}
+
+.link {
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  position: relative;
+  font-size: var(--fs-300);
+  transition: color 0.3s ease;
+}
+
+.link:after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--clr-accent-400);
+  transition: width 0.3s ease;
+}
+
+.link:hover:after {
+  width: 100%;
+}
+
+.small_text {
+  align-self: center;
+  font-size: var(--fs-300);
+  margin-top: 1rem;
+}

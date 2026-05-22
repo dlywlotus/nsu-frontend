@@ -1,0 +1,43 @@
+.modal {
+  background-color: var(--clr-modal);
+  border: 1px solid var(--clr-neutral-700);
+  position: absolute;
+  top: calc(65px + 0.5rem);
+  right: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease-in;
+  border-radius: 0.5rem;
+  padding-block: 0.5rem;
+
+  display: grid;
+  place-items: start;
+}
+
+.modal[data-open="true"] {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal > * {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.modal > *:hover {
+  color: var(--clr-accent-400);
+  background-color: var(--clr-accent-200);
+}
+
+.modal a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dark_mode {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  cursor: auto;
+}

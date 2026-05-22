@@ -1,0 +1,21 @@
+.post_controls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: var(--fs-300);
+  display: flex;
+  gap: 0.25rem;
+}
+
+.post_controls button {
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.post_controls button:hover {
+  background-color: var(--clr-accent-400);
+}

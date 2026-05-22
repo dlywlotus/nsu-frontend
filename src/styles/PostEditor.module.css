@@ -1,0 +1,53 @@
+.title_input,
+.body_input {
+  display: block;
+  border-radius: 0.5rem;
+  border: 1px solid var(--clr-neutral-300);
+  background-color: var(--clr-modal);
+  margin-block: 0.5rem;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.title_input,
+.body_input {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.title_input {
+  min-height: 42px;
+}
+
+.body_input {
+  min-height: 138px;
+}
+
+.bottom_row {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.form button {
+  background-color: var(--clr-text);
+  border: none;
+  color: var(--clr-body);
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.form button:hover {
+  background-color: var(--clr-accent-400);
+  color: var(--clr-neutral-100);
+}
+
+.err {
+  color: var(--clr-error);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-300);
+}

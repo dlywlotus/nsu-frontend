@@ -1,0 +1,42 @@
+.post_upper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+}
+
+.icon img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: 4px;
+}
+
+.post_upper img[data-loaded="false"] {
+  display: none;
+}
+
+.post_details {
+  font-size: var(--fs-300);
+}
+
+.categoryAndTime {
+  display: flex;
+  gap: 0.25rem;
+  color: var(--clr-accent-400);
+}
+
+.category {
+  text-transform: capitalize;
+  font-weight: var(--fw-bold);
+}
+
+.category span {
+  margin-left: 0.25rem;
+}

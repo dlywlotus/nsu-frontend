@@ -1,0 +1,5 @@
+.wrapper {
+  width: min(800px, calc(100vw - 1.5rem));
+  margin: auto;
+  padding-block: 0.75rem;
+}

@@ -1,0 +1,148 @@
+:root {
+  --clr-accent-400: #c78d94;
+  --clr-accent-200: #f3eeee;
+
+  --clr-neutral-100: #fafafa; /* For modals/inputs */
+  --clr-neutral-200: #f4f4f4; /* For tex/body*/
+  --clr-neutral-300: #dcdcdc; /* For borders */
+  --clr-neutral-700: #2c2c2c; /* For borders */
+  --clr-neutral-800: #1f1f1f; /* For text/body */
+  --clr-neutral-900: #121212; /* For modals/inputs */
+
+  --clr-error: #f0625d;
+  --clr-success: #81c784;
+
+  --ff-primary: "Poppins", sans-serif;
+  --ff-numbers: "Roboto Mono", serif;
+
+  --fw-regular: 400;
+  --fw-bold: 700;
+
+  --fs-300: 0.8rem;
+  --fs-400: 1rem;
+  --fs-500: 1.25rem;
+  --fs-600: 1.563rem;
+  --fs-700: 1.953rem;
+  --fs-800: 2.441rem;
+  --fs-900: 3.052rem;
+}
+
+/*THEME*/
+:root[data-theme="dark"] {
+  --clr-modal: var(--clr-neutral-900);
+  --clr-body: var(--clr-neutral-800);
+  --clr-text: var(--clr-neutral-200);
+  --clr-highlight: var(--clr-neutral-700);
+}
+
+:root[data-theme="light"] {
+  --clr-modal: var(--clr-neutral-100);
+  --clr-body: var(--clr-neutral-200);
+  --clr-text: var(--clr-neutral-800);
+  --clr-highlight: var(--clr-neutral-300);
+}
+
+/*
+1. Use a more-intuitive box-sizing model.
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/*
+2. Remove default margin
+*/
+* {
+  margin: 0;
+}
+/*
+Typographic tweaks!
+3. Add accessible line-height
+4. Improve text rendering
+*/
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--clr-body);
+  color: var(--clr-text);
+  font-family: var(--ff-primary);
+}
+
+/*
+5. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+6. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/*
+7. More usable h and p tags
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* 8. Remove highlight on click for mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*style scrollbar*/
+:root {
+  scrollbar-width: thin;
+  scrollbar-color: var(--clr-text) transparent;
+}
+
+/*React confirm alert styling*/
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.1) !important;
+  z-index: 1000 !important;
+  backdrop-filter: blur(4px);
+}
+
+.react-confirm-alert-body {
+  font-family: var(--ff-primary) !important;
+  background-color: var(--clr-text) !important;
+  color: var(--clr-body) !important;
+  border-radius: 0.75rem !important;
+}
+
+.react-confirm-alert-body h1 {
+  color: var(--clr-error) !important;
+  font-weight: var(--fw-bold) !important;
+  font-size: var(--fs-700);
+}
+
+@media (width < 920px) {
+  .container {
+    width: calc(100vw - 1.5rem);
+  }
+}

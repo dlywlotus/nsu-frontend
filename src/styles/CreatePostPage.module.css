@@ -1,0 +1,77 @@
+.wrapper {
+  width: min(800px, calc(100vw - 1.5rem));
+  margin: auto;
+  padding-block: 0.75rem;
+}
+
+.container {
+  border: 1px solid var(--clr-neutral-700);
+  background-color: var(--clr-modal);
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+.header {
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-600);
+  margin-bottom: 0.5rem;
+}
+
+.form label,
+.label {
+  margin-left: 0.25rem;
+  font-size: var(--fs-300);
+  font-weight: var(--fw-bold);
+}
+
+.label {
+  margin-bottom: 0.25rem;
+}
+
+.title_input,
+.body_input,
+.form select {
+  display: block;
+  border-radius: 0.75rem;
+  border: 1px solid var(--clr-neutral-300);
+  background-color: transparent;
+  margin-block: 0.25rem 1rem;
+  padding: 0.5rem;
+  outline: none;
+}
+
+.title_input,
+.body_input {
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.title_input {
+  min-height: 42px;
+}
+
+.body_input {
+  min-height: 138px;
+}
+
+.form button {
+  margin-top: 1rem;
+  border: none;
+  color: var(--clr-body);
+  background-color: var(--clr-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.form button:hover {
+  background-color: var(--clr-accent-400);
+  color: var(--clr-neutral-100);
+}
+
+.err {
+  color: var(--clr-error);
+  font-weight: var(--fw-bold);
+}

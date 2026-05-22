@@ -1,0 +1,17 @@
+.social_counters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-family: var(--ff-numbers);
+}
+
+.comment_count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.comment_count i {
+  position: relative;
+  top: -1px;
+}

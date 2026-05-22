@@ -1,0 +1,12 @@
+.wrapper {
+  z-index: 1000;
+  inset: 0 0 0 0;
+  position: fixed;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.wrapper span {
+  margin: 0;
+}

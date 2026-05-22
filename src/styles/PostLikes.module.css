@@ -1,0 +1,24 @@
+.btn_like {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: 0.75rem;
+  border: none;
+  gap: 0.5rem;
+  padding: 0;
+  transition: color 0.3s ease;
+}
+
+.btn_like[data-liked="true"] {
+  color: var(--clr-accent-400);
+}
+
+.btn_like:hover {
+  color: var(--clr-accent-400);
+}
+
+.btn_like i {
+  position: relative;
+  top: -1px;
+}

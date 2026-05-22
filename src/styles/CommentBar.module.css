@@ -1,0 +1,30 @@
+.comment_bar {
+  display: flex;
+  position: relative;
+  border: 1px solid var(--clr-neutral-300);
+  border-radius: 0.75rem;
+  padding: 0.25rem;
+}
+
+.comment_bar .comment_input {
+  width: 100%;
+  resize: none;
+  border: none;
+  background-color: transparent;
+  outline: none;
+}
+
+.btn_send {
+  border-radius: 0.5rem;
+  padding-bottom: 0.25rem;
+  border: none;
+  background-color: transparent;
+  font-size: var(--fs-500);
+  display: flex;
+  align-items: flex-end;
+  transition: color 0.3s ease;
+}
+
+.btn_send:hover {
+  color: var(--clr-accent-400);
+}

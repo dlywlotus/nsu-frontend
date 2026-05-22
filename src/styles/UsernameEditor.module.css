@@ -1,0 +1,54 @@
+.container {
+  position: relative;
+  margin-block: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid var(--clr-text);
+}
+
+.container .name,
+.container input {
+  width: 200px;
+  padding: 0.25rem;
+  text-align: center;
+  margin-left: 2rem;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-500);
+}
+
+.container:hover,
+.container:focus-within {
+  border-bottom: 2px solid var(--clr-accent-400);
+}
+
+.container input {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+.btn_edit,
+.btn_save {
+  border: none;
+  background-color: transparent;
+  transition: color 0.3s ease;
+  width: 2rem;
+}
+
+.btn_save {
+  font-size: var(--fs-500);
+}
+
+.btn_edit:hover,
+.btn_save:hover {
+  color: var(--clr-accent-400);
+}
+
+.err {
+  position: absolute;
+  bottom: -2rem;
+  text-align: center;
+  width: 100%;
+  color: var(--clr-error);
+  font-weight: var(--fw-bold);
+}

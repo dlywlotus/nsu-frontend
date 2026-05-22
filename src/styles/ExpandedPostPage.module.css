@@ -1,0 +1,32 @@
+.wrapper {
+  width: min(800px, calc(100vw - 1.5rem));
+  margin: auto;
+  padding-block: 0.75rem;
+}
+
+.container {
+  border: 1px solid var(--clr-neutral-700);
+  border-radius: 0.75rem;
+  background-color: var(--clr-modal);
+  position: relative;
+}
+
+.btn_back {
+  background-color: var(--clr-modal);
+  color: var(--clr-text);
+  border: 1px solid var(--clr-neutral-700);
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+  transition: background-color 0.3s ease;
+  display: grid;
+  align-items: center;
+  position: absolute;
+  top: 0.25rem;
+  left: -2.75rem;
+  font-size: 0.75rem;
+}
+
+.btn_back:hover {
+  background-color: var(--clr-accent-400);
+}

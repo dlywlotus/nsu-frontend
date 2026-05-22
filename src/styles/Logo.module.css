@@ -1,0 +1,17 @@
+.logo {
+  font-size: var(--fs-700);
+  line-height: 1;
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  color: var(--clr-text);
+}
+
+.logo span {
+  color: var(--clr-accent-400);
+}
+
+@media (width < 765px) {
+  .logo {
+    font-size: var(--fs-600);
+  }
+}

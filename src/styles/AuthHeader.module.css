@@ -1,0 +1,17 @@
+.primary_header {
+  color: var(--clr-primary-700);
+  font-size: var(--fs-800);
+  margin-bottom: 1rem;
+  line-height: 1;
+  font-weight: var(--fw-bold);
+}
+
+.primary_header span {
+  color: var(--clr-accent-400);
+}
+
+.secondary_header {
+  color: var(--clr-primary-700);
+  font-size: var(--fs-500);
+  font-weight: var(--fw-bold);
+}
