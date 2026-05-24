@@ -15,6 +15,7 @@
     "@tanstack/react-query": "^5.62.8",
     "axios": "^1.16.0",
     "date-fns": "^4.1.0",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-confirm-alert": "^3.0.6",
     "react-dom": "^18.3.1",

@@ -8,7 +8,9 @@ import SelectMenu from "../components/SelectMenu";
 import showError from "../util/showError";
 import { useContext } from "react";
 import { AuthContext } from "../Hooks/useAuth";
-import axios, { Axios, AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
+import ProtectedPage from "./ProtectedPage";
+import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
 //Zod schema
 const formSchema = z.object({
@@ -53,9 +55,12 @@ export default function CreatePostModal() {
       category: option.value,
     });
   };
+
+
+  // TODO: Test global axios error handler here
   const onSubmit = async (formData: FormData): Promise<any> => {
     try {
-      await axios.post(`${import.meta.env.VITE_SERVER_API_URL}/post`,
+      await protectedApi.post(`${import.meta.env.VITE_SERVER_API_URL}/post`,
         formData,
         {
           headers: {
@@ -64,46 +69,44 @@ export default function CreatePostModal() {
         }
       )
     } catch (error) {
-      if (error instanceof AxiosError)
-        console.log(error.response?.data);
-      else {
-        console.log(error);
-      }
+      console.log(axios.isAxiosError(error) ? error?.response?.data : error)
       showError("Error creating post");
     } finally {
       navigate("/");
     }
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        <div className={styles.header}>Create post</div>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <label htmlFor='title'>Title</label>
-          <TextareaAutosize
-            className={styles.title_input}
-            id='title'
-            minRows={1}
-            {...register("title")}
-          />
-          {errors.title && <p className={styles.err}>{errors.title.message}</p>}
+    <ProtectedPage>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <div className={styles.header}>Create post</div>
+          <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+            <label htmlFor='title'>Title</label>
+            <TextareaAutosize
+              className={styles.title_input}
+              id='title'
+              minRows={1}
+              {...register("title")}
+            />
+            {errors.title && <p className={styles.err}>{errors.title.message}</p>}
 
-          <label htmlFor='body'>Body</label>
-          <TextareaAutosize
-            className={styles.body_input}
-            id='body'
-            minRows={5}
-            {...register("body")}
-          />
-          {errors.body && <p className={styles.err}>{errors.body.message}</p>}
+            <label htmlFor='body'>Body</label>
+            <TextareaAutosize
+              className={styles.body_input}
+              id='body'
+              minRows={5}
+              {...register("body")}
+            />
+            {errors.body && <p className={styles.err}>{errors.body.message}</p>}
 
-          <div className={styles.label}>Category</div>
-          <SelectMenu options={categoryOptions} onChange={onSelect} />
-          <button type='submit'>
-            {isSubmitting ? "...Posting" : "Create"}
-          </button>
-        </form>
+            <div className={styles.label}>Category</div>
+            <SelectMenu options={categoryOptions} onChange={onSelect} />
+            <button type='submit'>
+              {isSubmitting ? "...Posting" : "Create"}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </ProtectedPage>
   );
 }

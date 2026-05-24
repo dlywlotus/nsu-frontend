@@ -15,6 +15,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import Home from "./pages/Home";
 import MainHeader from "./components/MainHeader";
 import { AuthProvider } from "./Hooks/useAuth";
+import AxiosInterceptorProvider from "./Hooks/useAxiosInterceptor";
 
 const queryClient = new QueryClient();
 
@@ -81,9 +82,11 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <AxiosInterceptorProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </AxiosInterceptorProvider>
     </AuthProvider>
   </StrictMode>
 );

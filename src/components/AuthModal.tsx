@@ -8,8 +8,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PulseLoader from "react-spinners/PulseLoader";
-import axios from "axios";
 import { AuthContext } from "../Hooks/useAuth";
+import { api } from "../Hooks/useAxiosInterceptor";
+import axios from "axios";
 
 // Infer form schema type
 type FormData = {
@@ -52,14 +53,15 @@ export default function AuthModal() {
     setTimeout(() => setIsShowError(false), 2000);
   };
 
-
+  // Errors are caught in onSubmit below
   const onLogin = async (formData: FormData) => {
     await signIn(formData);
     navigate("/");
   };
 
+  // Errors are caught in onSubmit below
   const onSignUp = async (formData: FormData) => {
-    await axios.post(`${import.meta.env.VITE_SERVER_API_URL}/sign_up`, {
+    await api.post("/sign_up", {
       "username": formData.username,
       "password": formData.password
     });
@@ -68,8 +70,8 @@ export default function AuthModal() {
   };
 
   const signIn = async (formData: FormData) => {
-    const res = await axios.post(
-      `${import.meta.env.VITE_SERVER_API_URL}/sign_in`,
+    const res = await api.post(
+      "/sign_in",
       {
         "username": formData.username,
         "password": formData.password
@@ -84,7 +86,7 @@ export default function AuthModal() {
       isLogin ? await onLogin(formData) : await onSignUp(formData);
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.log(axios.isAxiosError(error) ? error?.response?.data : error)
       flashErrorMessage();
     }
   };
