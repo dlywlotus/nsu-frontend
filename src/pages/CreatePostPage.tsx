@@ -8,7 +8,7 @@ import SelectMenu from "../components/SelectMenu";
 import showError from "../util/showError";
 import { useContext } from "react";
 import { AuthContext } from "../Hooks/useAuth";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import ProtectedPage from "./ProtectedPage";
 import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
@@ -25,11 +25,11 @@ const formSchema = z.object({
   category: z.enum(["EVENTS", "STUDIES", "HOUSING", "OTHERS"]),
 });
 
-const categoryOptions = [
+export const categoryOptions = [
   { value: "EVENTS", label: "events" },
   { value: "STUDIES", label: "studies" },
   { value: "HOUSING", label: "housing" },
-  { value: "OTHERS", label: "others" },
+  { value: "OTHERS", label: "others" }
 ];
 
 // Infer form schema type

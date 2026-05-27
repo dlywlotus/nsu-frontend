@@ -1,8 +1,7 @@
-.page {
+.post_list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1rem;
 }
 
 .end_of_page {

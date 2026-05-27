@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useContext, useEffect } from "react"
 import { AuthContext, AuthDetails } from "./useAuth";
 import { jwtDecode } from "jwt-decode";

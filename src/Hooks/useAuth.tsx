@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { api } from './useAxiosInterceptor';
 
 export type AuthDetails = {
