@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/Post.module.css";
-import type { Post } from "./PostList";
+import type { PostDetails } from "./PostList";
 import PostSocialCounters from "./PostSocialCounters";
 import PostControls from "./PostControls"
 import PostHeader from "./PostHeader";
 import PostEditor from "./PostEditor";
 
 type props = {
-  postContent: Post;
+  postContent: PostDetails;
   isShowControls?: boolean;
   isExpanded?: boolean;
   isEditing?: boolean;

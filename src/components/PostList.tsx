@@ -3,7 +3,7 @@ import styles from "../styles/PostList.module.css";
 import Post from "./Post";
 import { Page } from "./PostDashboard";
 
-export type Post = {
+export type PostDetails = {
   id: string;
   title: string;
   body: string;

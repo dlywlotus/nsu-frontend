@@ -1,5 +1,5 @@
 import styles from "../styles/PostEditor.module.css";
-import { Post } from "./PostList";
+import { PostDetails } from "./PostList";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +12,7 @@ import showError from "../util/showError";
 import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
 type props = {
-  postContent: Post;
+  postContent: PostDetails;
 };
 
 //Zod schema

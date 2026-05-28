@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import PostFilterBar from "./PostFilterBar";
-import PostList, { Post } from "./PostList";
+import PostList, { PostDetails } from "./PostList";
 import LoadingSpinner from "./LoadingSpinner"
 import { protectedApi } from "../Hooks/useAxiosInterceptor";
 import axios from "axios";
@@ -16,7 +16,7 @@ export type filterOptions = {
 export type Page = {
   curPage: number;
   pageCount: number;
-  posts: Post[];
+  posts: PostDetails[];
 }
 
 
@@ -63,6 +63,7 @@ export default function PostDashboard({ selfPosted = false }: props) {
       queryKey: ["posts", filter, selfPosted, authDetails?.userId],
       queryFn: fetchPosts,
       initialPageParam: 0,
+      staleTime: 1000 * 60,  // 1 minute
       getNextPageParam: (lastPage: Page) => {
         // page number is 0 indexed
         return lastPage.curPage >= lastPage.pageCount - 1

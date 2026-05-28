@@ -56,17 +56,10 @@ export default function CreatePostModal() {
     });
   };
 
-
-  // TODO: Test global axios error handler here
   const onSubmit = async (formData: FormData): Promise<any> => {
     try {
       await protectedApi.post(`${import.meta.env.VITE_SERVER_API_URL}/post`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${authDetails?.accessToken}`
-          }
-        }
+        formData
       )
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error)

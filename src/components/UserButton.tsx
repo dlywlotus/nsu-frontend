@@ -13,7 +13,6 @@ export default function UserButton({ }: props) {
   const buttonRef = useRef<any>();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  //TODO
   const openMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
