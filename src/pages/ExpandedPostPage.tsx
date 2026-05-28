@@ -4,27 +4,22 @@ import Post from "../components/Post";
 import styles from "../styles/ExpandedPostPage.module.css";
 import type { PostDetails } from "../components/PostList";
 import { useNavigate, useParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
 type props = {
   isEditing?: boolean;
 };
 
-
+// TODO: Set up likes logic 
 // TODO: Find out when to cache and when to invalidate queries 
-// TODO: Set up fetching and styling
-// TODO: Set up user profile page
-// TODO: Set up a route that fetches all comments for a given post 
 
 export default function ExpandedPostPage({ isEditing = false }: props) {
   const { postId } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   const navBack = () => {
     navigate("/");
-    // queryClient.removeQueries({ queryKey: ["posts"] });
   };
 
   const fetchPost = async (): Promise<PostDetails> => {

@@ -1,42 +1,39 @@
 import styles from "../styles/UserDetails.module.css";
-import ProfileIcon from "../components/ProfileIcon";
 import UsernameEditor from "./UsernameEditor";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { useUser } from "../Hooks/useAuth";
+import { useContext } from "react";
+import { AuthContext } from "../Hooks/useAuth";
+import { protectedApi } from "../Hooks/useAxiosInterceptor";
+import ProfileIcon from "./ProfileIcon";
 
 type props = {};
 
-export type fetchedUser = {
-  Username: string;
-  ProfilePic: string | null;
+export type UserInfo = {
+  username: string;
+  profileIconImageKey: string | null;
 };
 
 export default function UserDetails({ }: props) {
-  const { userId } = useUser();
+  const { authDetails } = useContext(AuthContext);
 
-  const fetchUserDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `${import.meta.env.VITE_SERVER_API_URL}/user/${userId}`
-      );
-      const user: fetchedUser = data.user;
-      return user;
-    } catch (error) {
-      console.error(error);
-    }
+  const fetchUserDetails = async (): Promise<UserInfo | undefined> => {
+    if (!authDetails) return;
+
+    const { data } = await protectedApi.get("/user");
+    console.log(data);
+    return data;
   };
 
-  const { data: fetchedUser } = useQuery({
+  const { data } = useQuery({
     queryKey: ["userDetails"],
     queryFn: fetchUserDetails,
-    enabled: userId !== null,
+    staleTime: 1000 * 60
   });
 
   return (
     <section className={styles.user_details}>
-      <ProfileIcon fetchedUser={fetchedUser} />
-      <UsernameEditor fetchedUser={fetchedUser} />
+      <ProfileIcon userInfo={data} />
+      <UsernameEditor userData={data} />
     </section>
   );
 }

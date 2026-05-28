@@ -41,13 +41,15 @@ export default function CommentBar({ postId, parentCommentId }: props) {
     },
     onSuccess: (newComment) => {
       //insert new parent/child comment into comments array
-      queryClient.setQueryData(["post", postId, "comments"], (comments: CommentDetails[]) =>
-        parentCommentId
+      queryClient.setQueryData(["post", postId, "comments"], (comments: CommentDetails[]) => {
+        return parentCommentId
           ? comments.map(c => c.id === parentCommentId
-            ? { ...c, nestedComments: [newComment, ...c.nestedComments] }
+            ? { ...c, nestedComments: [newComment, ...(c.nestedComments ?? [])] }
             : c
           )
           : [newComment, ...comments]
+      }
+
       );
 
       queryClient.setQueryData(["post", postId], (post: PostDetails): PostDetails => ({
@@ -55,7 +57,8 @@ export default function CommentBar({ postId, parentCommentId }: props) {
       }))
 
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error)
       showError("Error creating comment");
     },
   });

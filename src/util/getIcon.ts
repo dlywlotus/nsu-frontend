@@ -1,10 +1,10 @@
 import defaultIcon from '../images/defaultProfileIcon.svg';
 
-const getIcon = (profilePic: string | null) => {
-  if (profilePic?.startsWith('blob:')) {
-    return profilePic;
-  } else if (profilePic) {
-    return defaultIcon;
+const getIcon = (profileIconImageKey: string | null) => {
+  if (profileIconImageKey?.startsWith('blob:')) {
+    return profileIconImageKey;
+  } else if (profileIconImageKey) {
+    return `${import.meta.env.VITE_S3_SERVER}/profile-icons/${profileIconImageKey}`;
   } else {
     return defaultIcon;
   }

@@ -12,10 +12,9 @@ export type PostDetails = {
   authorId: string;
   likeCount: number
   commentCount: number;
-
   username: string;
   userLiked: boolean;
-  profilePic: string;
+  profileIconImageKey: string;
 };
 
 type props = {

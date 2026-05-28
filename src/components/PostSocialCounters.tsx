@@ -1,9 +1,9 @@
 import styles from "../styles/PostSocialCounters.module.css";
 import PostLikes from "./PostLikes"
-import { Post } from "./PostList";
+import { PostDetails } from "./PostList";
 
 type props = {
-  postContent: Post;
+  postContent: PostDetails;
   isExpanded: boolean;
 };
 

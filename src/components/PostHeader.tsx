@@ -1,5 +1,5 @@
 import styles from "../styles/PostHeader.module.css";
-import { Post } from "./PostList";
+import { PostDetails } from "./PostList";
 import { formatDistanceToNowStrict } from "date-fns";
 import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -7,7 +7,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import getIcon from "../util/getIcon";
 
 type props = {
-  postContent: Post;
+  postContent: PostDetails;
 };
 
 const icon: Record<string, string> = {
@@ -28,7 +28,7 @@ export default function PostHeader({ postContent }: props) {
       <div className={styles.icon}>
         {!isLoaded && <Skeleton circle={true} width={32} height={32} />}
         <img
-          src={getIcon(postContent.profilePic)}
+          src={getIcon(postContent.profileIconImageKey)}
           onLoad={() => setIsLoaded(true)}
           alt='user_icon'
           data-loaded={isLoaded}

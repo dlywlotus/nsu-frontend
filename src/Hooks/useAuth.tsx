@@ -9,16 +9,20 @@ export type AuthDetails = {
 
 type AuthContext = {
     authDetails: AuthDetails | null;
-    setAuthDetails: React.Dispatch<React.SetStateAction<AuthDetails | null>>
+    setAuthDetails: React.Dispatch<React.SetStateAction<AuthDetails | null>>;
+    isLoading: boolean;
 }
+
 export const AuthContext = createContext<AuthContext>({
     authDetails: null,
-    setAuthDetails: () => { }
+    setAuthDetails: () => { },
+    isLoading: true,
 });
 
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [authDetails, setAuthDetails] = useState<AuthDetails | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchAuthDetails = async () => {
@@ -28,12 +32,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             } catch (error) {
                 console.log(axios.isAxiosError(error) ? error?.response?.data : error)
             }
+            setIsLoading(false);
         };
         fetchAuthDetails();
     }, [])
 
     return (
-        <AuthContext.Provider value={{ authDetails, setAuthDetails }}>
+        <AuthContext.Provider value={{ authDetails, setAuthDetails, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

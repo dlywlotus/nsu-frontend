@@ -32,7 +32,7 @@ export default function PostDashboard({ selfPosted = false }: props) {
     searchKeyword: "",
   });
 
-  const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
+  const fetchPosts = async ({ pageParam }: { pageParam: number }): Promise<Page> => {
     try {
       let queryURI = `/posts?page=${pageParam}&size=${10}&sort=${filter.sortBy},desc`
 

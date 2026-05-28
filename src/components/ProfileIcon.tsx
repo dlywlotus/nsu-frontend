@@ -1,25 +1,20 @@
 import { useRef, useState } from "react";
 import getCroppedImageBlob from "../util/getCroppedImageBlob";
 import ImageCropper from "../components/ImageCropper";
-import supabase from "../supabase";
 import styles from "../styles/ProfileIcon.module.css";
-import axios from "axios";
-import getSession from "../util/getSession";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import mutateUserDetails from "../util/mutateUserDetails";
-import { useUser } from "../Hooks/useAuth";
 import showError from "../util/showError";
-import { fetchedUser } from "./UserDetails";
+import { UserInfo } from "./UserDetails";
 import Skeleton from "react-loading-skeleton";
 import { useMediaQuery } from "react-responsive";
 import getIcon from "../util/getIcon";
+import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
 type props = {
-  fetchedUser: fetchedUser | undefined;
+  userInfo: UserInfo | undefined;
 };
 
-export default function ProfileIcon({ fetchedUser }: props) {
-  const { userId } = useUser();
+export default function ProfileIcon({ userInfo }: props) {
   const queryClient = useQueryClient();
   const fileInputRef = useRef<any>(null);
   const [uploadedImg, setUploadedImg] = useState<any>(null);
@@ -29,6 +24,7 @@ export default function ProfileIcon({ fetchedUser }: props) {
   const handleImgUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
     if (file && file.type.startsWith("image/")) {
+      // check file size first 
       const reader = new FileReader();
       reader.onload = () => {
         setUploadedImg(reader.result);
@@ -41,68 +37,36 @@ export default function ProfileIcon({ fetchedUser }: props) {
   };
 
   const mutateProfilePic = async (imageBlob: Blob) => {
-    const { token } = await getSession();
-
-    //delete old image from storage if it exists
-    if (fetchedUser?.ProfilePic) {
-      const { error } = await supabase.storage
-        .from("profile_icons")
-        .remove([fetchedUser?.ProfilePic]);
-
-      if (error) {
-        throw new Error(error.message);
-      }
-    }
-
-    const newImageName = `User_${userId}_${Date.now()}.jpeg`;
-
-    //upload new image to storage
-    const { error: storageError } = await supabase.storage
-      .from("profile_icons")
-      .upload(newImageName, imageBlob, {
-        cacheControl: "31536000",
-      });
-
-    if (storageError) throw new Error(storageError.message);
-
     //store image url in users table in database
-    await axios.put(
-      `${import.meta.env.VITE_SERVER_API_URL}/auth_req/edit_user/${userId}`,
-      {
-        profilePic: newImageName,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const imageFile = new File([imageBlob], "fileToUpload.jpeg", {
+      type: imageBlob.type,
+      lastModified: new Date().getTime()
+    });
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    const res = await protectedApi.put("user/profile-icon", formData);
+    return res.data
   };
 
   const mutation = useMutation({
     mutationFn: mutateProfilePic,
-    onMutate: imageBlob => {
-      const tempImageURl = URL.createObjectURL(imageBlob);
-      const undoFn = mutateUserDetails(
-        tempImageURl,
-        "ProfilePic",
-        queryClient,
-        userId
-      );
-      return undoFn;
+    onSuccess: (newUserInfo: UserInfo) => {
+      queryClient.setQueryData(["userDetails"], (oldUserInfo: UserInfo) => ({
+        ...oldUserInfo,
+        profileIconImageKey: newUserInfo.profileIconImageKey
+      }))
     },
-    onError: (err, _, undo) => {
-      undo && undo();
+    onError: (err) => {
       showError("Error uploading profile icon");
       console.log(err);
     },
   });
 
-  const onCropComplete = async (img: any, crop: any) => {
+  const onCropComplete = async (uploadedImg: any, crop: any) => {
     try {
       setIsCropping(false);
       fileInputRef.current.value = "";
-      const croppedImgBlob: any = await getCroppedImageBlob(img, crop);
+      const croppedImgBlob: any = await getCroppedImageBlob(uploadedImg, crop);
       mutation.mutate(croppedImgBlob);
     } catch (error) {
       showError("Error uploading profile icon");
@@ -113,9 +77,9 @@ export default function ProfileIcon({ fetchedUser }: props) {
   return (
     <>
       <div className={styles.profile_pic}>
-        {fetchedUser ? (
+        {userInfo ? (
           <>
-            <img src={getIcon(fetchedUser.ProfilePic)} alt='default' />
+            <img src={getIcon(userInfo.profileIconImageKey)} alt='default' />
             <input type='file' ref={fileInputRef} onChange={handleImgUpload} />
             <span className={styles.text}>Edit image</span>
           </>
