@@ -2,13 +2,13 @@ import styles from "../styles/CommentSection.module.css";
 import CommentBar from "./CommentBar";
 import Comment from "./Comment";
 
-// TODO Add profileIcon, username field to comments
-
 export type CommentDetails = {
   id: number;
   body: string;
   postId: string;
   authorId: string;
+  username: string;
+  profileIconImageKey: string;
   parentCommentId: number;
   createdAt: string;
   nestedComments: CommentDetails[]

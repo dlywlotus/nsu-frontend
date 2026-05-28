@@ -18,12 +18,12 @@ export default function Comment({ commentData }: props) {
   return (
     <div className={styles.container}>
 
-      <img src={getIcon("commentData.profilePic")} alt='icon' />
+      <img src={getIcon(commentData.profileIconImageKey)} alt='icon' />
       <div className={styles.main_content}>
         <div className={styles.header}>
           <div className={styles.nameAndTime}>
             <span className={styles.author}>
-              {"commentData.username"} &middot;{" "}
+              {commentData.username} &middot;{" "}
             </span>
             <span className={styles.time}>{timeElapsed} ago</span>
           </div>

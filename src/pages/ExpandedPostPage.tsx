@@ -11,7 +11,6 @@ type props = {
   isEditing?: boolean;
 };
 
-// TODO: Update comments route to return name and profile pic 
 
 // TODO: Find out when to cache and when to invalidate queries 
 // TODO: Set up fetching and styling
