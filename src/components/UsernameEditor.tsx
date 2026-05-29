@@ -7,6 +7,7 @@ import LoadingSpinner from "./LoadingSpinner";
 import useMutateUsername from "../Hooks/useMutateUsername";
 import { UserInfo } from "./UserDetails";
 import Skeleton from "react-loading-skeleton";
+import { confirmAlert } from "react-confirm-alert";
 
 type props = {
   userData: UserInfo | undefined;
@@ -38,9 +39,25 @@ export default function UsernameEditor({ userData }: props) {
   });
 
   const onSubmit = async (formData: FormData): Promise<any> => {
-    setIsEditing(false);
     if (formData.username === username) return;
-    mutation.mutate(formData.username);
+
+    confirmAlert({
+      title: "Confirmation",
+      message: "Your login username will change. Are you sure you want to continue?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            mutation.mutate(formData.username);
+            setIsEditing(false);
+          }
+        },
+        {
+          label: "No",
+          onClick: () => { setIsEditing(false); },
+        },
+      ],
+    });
   };
 
   const onStartEditing = () => {

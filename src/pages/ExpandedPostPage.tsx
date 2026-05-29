@@ -11,8 +11,11 @@ type props = {
   isEditing?: boolean;
 };
 
+// TODO: Add image versioning so image cache is cleared on update
+
+
 // TODO: Set up likes logic 
-// TODO: Find out when to cache and when to invalidate queries 
+// TODO: Update the dark mode styling
 
 export default function ExpandedPostPage({ isEditing = false }: props) {
   const { postId } = useParams();

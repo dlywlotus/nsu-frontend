@@ -45,8 +45,7 @@ export default function PostEditor({ postContent }: props) {
 
   const onSubmit = async (formData: FormData): Promise<any> => {
     try {
-      await protectedApi.put(
-        "/post", { ...formData, postId: postContent.id }
+      await protectedApi.put("/post", { ...formData, postId: postContent.id }
       );
       queryClient.invalidateQueries({ queryKey: ["post", postContent.id] });
       goToPost();

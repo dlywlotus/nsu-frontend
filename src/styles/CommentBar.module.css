@@ -1,9 +1,9 @@
 .comment_bar {
   display: flex;
   position: relative;
-  border: 1px solid var(--clr-neutral-300);
+  border: 1px solid var(--clr-highlight);
   border-radius: 0.75rem;
-  padding: 0.25rem;
+  padding: 0.5rem;
 }
 
 .comment_bar .comment_input {

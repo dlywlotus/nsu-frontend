@@ -4,7 +4,7 @@
   background-color: var(--clr-modal);
   width: min(800px, calc(100vw - 1.5rem));
   margin: auto;
-  margin-block: 1rem;
+  margin-block: 1.5rem;
 }
 
 .container header {

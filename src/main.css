@@ -12,8 +12,8 @@
   --clr-error: #f0625d;
   --clr-success: #81c784;
 
-  --ff-primary: "Poppins", sans-serif;
-  --ff-numbers: "Roboto Mono", serif;
+  --ff-primary: 'Poppins', sans-serif;
+  --ff-numbers: 'Roboto Mono', serif;
 
   --fw-regular: 400;
   --fw-bold: 700;
@@ -28,18 +28,27 @@
 }
 
 /*THEME*/
-:root[data-theme="dark"] {
-  --clr-modal: var(--clr-neutral-900);
-  --clr-body: var(--clr-neutral-800);
+:root[data-theme='dark'] {
+  --clr-modal: var(--clr-neutral-800);
+  --clr-body: var(--clr-neutral-900);
   --clr-text: var(--clr-neutral-200);
   --clr-highlight: var(--clr-neutral-700);
 }
 
-:root[data-theme="light"] {
+:root[data-theme='light'] {
   --clr-modal: var(--clr-neutral-100);
   --clr-body: var(--clr-neutral-200);
   --clr-text: var(--clr-neutral-800);
   --clr-highlight: var(--clr-neutral-300);
+}
+
+.no-transitions,
+.no-transitions * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }
 
 /*
