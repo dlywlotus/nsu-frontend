@@ -2,13 +2,14 @@ import { useRef, useState } from "react";
 import getCroppedImageBlob from "../util/getCroppedImageBlob";
 import ImageCropper from "../components/ImageCropper";
 import styles from "../styles/ProfileIcon.module.css";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation, InfiniteData } from "@tanstack/react-query";
 import showError from "../util/showError";
 import { UserInfo } from "./UserDetails";
 import Skeleton from "react-loading-skeleton";
 import { useMediaQuery } from "react-responsive";
 import getIcon from "../util/getIcon";
 import { protectedApi } from "../Hooks/useAxiosInterceptor";
+import { Page } from "./PostDashboard";
 
 type props = {
   userInfo: UserInfo | undefined;
@@ -50,11 +51,28 @@ export default function ProfileIcon({ userInfo }: props) {
 
   const mutation = useMutation({
     mutationFn: mutateProfilePic,
-    onSuccess: (newUserInfo: UserInfo) => {
-      queryClient.setQueryData(["userDetails"], (oldUserInfo: UserInfo) => ({
-        ...oldUserInfo,
-        profileIconImageKey: newUserInfo.profileIconImageKey
-      }))
+    onSuccess: async (newUserData: UserInfo) => {
+      queryClient.setQueryData(['userDetails'], (oldUserData: UserInfo) => ({
+        ...oldUserData,
+        ["profileIconImageKey"]: `${newUserData.profileIconImageKey}?time=${Date.now()}`
+      }));
+      queryClient.setQueriesData({ queryKey: ["posts"] }, (data: InfiniteData<Page, unknown> | undefined) => {
+        if (!data) return;
+        return {
+          ...data,
+          pages: data?.pages.map(page => ({
+            ...page,
+            posts: (page.posts ?? [])?.map(post => {
+              let newPost = {
+                ...post,
+                ["profileIconImageKey"]: `${newUserData.profileIconImageKey}?time=${Date.now()}`,
+              };
+              return post.authorId === newUserData.id ? newPost : post;
+            }),
+          })),
+        };
+      });
+      console.log(queryClient.getQueriesData({ queryKey: ['posts'] }))
     },
     onError: (err) => {
       showError("Error uploading profile icon");

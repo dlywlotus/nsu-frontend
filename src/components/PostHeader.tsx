@@ -28,7 +28,7 @@ export default function PostHeader({ postContent }: props) {
       <div className={styles.icon}>
         {!isLoaded && <Skeleton circle={true} width={32} height={32} />}
         <img
-          src={getIcon(postContent.profileIconImageKey)}
+          src={getIcon(`${postContent.profileIconImageKey}?time=${Date.now()}`)}
           onLoad={() => setIsLoaded(true)}
           alt='user_icon'
           data-loaded={isLoaded}

@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import showError from "../util/showError";
 import { protectedApi } from "./useAxiosInterceptor";
 import { UserInfo } from "../components/UserDetails";
+import { Page } from "../components/PostDashboard";
 
 const useMutateUsername = () => {
     const queryClient = useQueryClient();
@@ -16,6 +17,22 @@ const useMutateUsername = () => {
                 ...oldUserData,
                 ["username"]: newUserData.username,
             }));
+            queryClient.setQueriesData({ queryKey: ["posts"] }, (data: InfiniteData<Page, unknown> | undefined) => {
+                if (!data) return;
+                return {
+                    ...data,
+                    pages: data?.pages.map(page => ({
+                        ...page,
+                        posts: (page.posts ?? [])?.map(post => {
+                            let newPost = {
+                                ...post,
+                                ["username"]: newUserData.username,
+                            };
+                            return post.authorId === newUserData.id ? newPost : post;
+                        }),
+                    })),
+                };
+            });
         },
         onError: (error) => {
             showError("Error updating username");

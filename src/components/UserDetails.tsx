@@ -9,6 +9,7 @@ import ProfileIcon from "./ProfileIcon";
 type props = {};
 
 export type UserInfo = {
+  id: string;
   username: string;
   profileIconImageKey: string | null;
 };
