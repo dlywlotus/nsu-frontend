@@ -3,9 +3,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import PostFilterBar from "./PostFilterBar";
 import PostList, { PostDetails } from "./PostList";
 import LoadingSpinner from "./LoadingSpinner"
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
 import axios from "axios";
-import { AuthContext } from "../Hooks/useAuth";
+import { api, AuthContext } from "../Hooks/useAuth";
 
 export type filterOptions = {
   sortBy: "createdAt" | "likes";
@@ -25,7 +24,7 @@ type props = {
 };
 
 export default function PostDashboard({ selfPosted = false }: props) {
-  const { authDetails, isLoading } = useContext(AuthContext)
+  const { getAuthDetails } = useContext(AuthContext)
   const [filter, setFilter] = useState<filterOptions>({
     sortBy: "createdAt",
     category: "ALL",
@@ -33,6 +32,9 @@ export default function PostDashboard({ selfPosted = false }: props) {
   });
 
   const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
+    const authDetails = await getAuthDetails();
+
+    console.log(authDetails?.accessToken)
     try {
       let queryURI = `/posts?page=${pageParam}&size=${10}&sort=${filter.sortBy},desc`
 
@@ -49,7 +51,12 @@ export default function PostDashboard({ selfPosted = false }: props) {
       }
 
       console.log(`Post fetching query: ${queryURI}`)
-      const data = (await protectedApi.get(queryURI, { headers: { Authorization: `Bearer ${authDetails?.accessToken}` } })).data;
+      const data = (await api.get(queryURI,
+        {
+          headers: {
+            Authorization: `Bearer ${authDetails?.accessToken}`
+          }
+        })).data;
       console.log(data)
       return data;
     } catch (error) {
@@ -62,7 +69,6 @@ export default function PostDashboard({ selfPosted = false }: props) {
     useInfiniteQuery({
       queryKey: ["posts", filter, selfPosted],
       queryFn: fetchPosts,
-      enabled: !isLoading,
       initialPageParam: 0,
       getNextPageParam: (lastPage: Page) => {
         // page number is 0 indexed

@@ -2,8 +2,7 @@ import styles from "../styles/UserDetails.module.css";
 import UsernameEditor from "./UsernameEditor";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import { AuthContext } from "../Hooks/useAuth";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
+import { api, AuthContext } from "../Hooks/useAuth";
 import ProfileIcon from "./ProfileIcon";
 
 type props = {};
@@ -15,12 +14,15 @@ export type UserInfo = {
 };
 
 export default function UserDetails({ }: props) {
-  const { authDetails } = useContext(AuthContext);
+  const { getAuthDetails } = useContext(AuthContext);
 
   const fetchUserDetails = async (): Promise<UserInfo | undefined> => {
-    if (!authDetails) return;
-
-    const { data } = await protectedApi.get("/user");
+    const authDetails = await getAuthDetails();
+    const { data } = await api.get("/user", {
+      headers: {
+        Authorization: `Bearer ${authDetails?.accessToken}`
+      }
+    });
     console.log(data);
     return data;
   };

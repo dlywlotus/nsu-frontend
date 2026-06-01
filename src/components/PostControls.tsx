@@ -4,8 +4,9 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
 import axios from "axios";
+import { api, AuthContext } from "../Hooks/useAuth";
+import { useContext } from "react";
 
 type props = {
   postId: string;
@@ -14,10 +15,17 @@ type props = {
 export default function PostControls({ postId }: props) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { getAuthDetails } = useContext(AuthContext);
 
   const deletePost = async (postId: string) => {
     try {
-      await protectedApi.delete(`/post/${postId}`);
+      const authDetails = await getAuthDetails();
+      await api.delete(`/post/${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${authDetails?.accessToken}`
+          }
+        });
       queryClient.refetchQueries({ queryKey: ["posts"] });
       toast.success("Post deleted successfully", {
         autoClose: 5000,

@@ -1,4 +1,4 @@
-import { StrictMode, useContext } from "react";
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./main.css";
@@ -14,7 +14,6 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import Home from "./pages/Home";
 import MainHeader from "./components/MainHeader";
 import { AuthProvider } from "./Hooks/useAuth";
-import AxiosInterceptorProvider from "./Hooks/useAxiosInterceptor";
 import ExpandedPostPage from "./pages/ExpandedPostPage";
 
 const queryClient = new QueryClient();
@@ -82,11 +81,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <AxiosInterceptorProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AxiosInterceptorProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </AuthProvider>
   </StrictMode>
 );

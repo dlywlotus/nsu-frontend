@@ -1,7 +1,8 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query"
-import { protectedApi } from "./useAxiosInterceptor";
 import { PostDetails } from "../components/PostList";
 import { Page } from "../components/PostDashboard";
+import { api, AuthContext } from "./useAuth";
+import { useContext } from "react";
 
 type MutationProps = {
     postId: string;
@@ -10,6 +11,7 @@ type MutationProps = {
 
 const useMutateLikes = () => {
     const queryClient = useQueryClient()
+    const { getAuthDetails } = useContext(AuthContext)
 
     const getUpdatedPost = (data: PostDetails, isLiked: boolean) => {
         if (!data) {
@@ -26,10 +28,12 @@ const useMutateLikes = () => {
     }
 
     const mutationFunction = async ({ postId, isLiked }: MutationProps) => {
+        const authDetails = await getAuthDetails();
+
         if (isLiked) {
-            await protectedApi.delete(`like/${postId}`);
+            await api.delete(`like/${postId}`, { headers: { Authorization: `Bearer ${authDetails?.accessToken}` } });
         } else {
-            await protectedApi.post(`like/${postId}`);
+            await api.post(`like/${postId}`, {}, { headers: { Authorization: `Bearer ${authDetails?.accessToken}` } });
         }
     }
 

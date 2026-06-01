@@ -8,8 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PulseLoader from "react-spinners/PulseLoader";
-import { AuthContext } from "../Hooks/useAuth";
-import { api } from "../Hooks/useAxiosInterceptor";
+import { api, AuthContext } from "../Hooks/useAuth";
 import axios from "axios";
 
 // Infer form schema type

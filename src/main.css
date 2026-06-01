@@ -36,8 +36,8 @@
 }
 
 :root[data-theme='light'] {
-  --clr-modal: var(--clr-neutral-100);
-  --clr-body: var(--clr-neutral-200);
+  --clr-modal: var(--clr-neutral-200);
+  --clr-body: var(--clr-neutral-100);
   --clr-text: var(--clr-neutral-800);
   --clr-highlight: var(--clr-neutral-300);
 }

@@ -1,15 +1,24 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
 import showError from "../util/showError";
-import { protectedApi } from "./useAxiosInterceptor";
 import { UserInfo } from "../components/UserDetails";
 import { Page } from "../components/PostDashboard";
+import { useContext } from "react";
+import { api, AuthContext } from "./useAuth";
 
 const useMutateUsername = () => {
     const queryClient = useQueryClient();
+    const { getAuthDetails } = useContext(AuthContext)
 
     const mutation = useMutation({
         mutationFn: async (username: string) => {
-            const res = await protectedApi.put("/user/name", { username });
+            const authDetails = await getAuthDetails();
+            const res = await api.put("/user/name",
+                { username },
+                {
+                    headers: {
+                        Authorization: `Bearer ${authDetails?.accessToken}`
+                    }
+                });
             return res.data;
         },
         onSuccess: async (newUserData: UserInfo) => {

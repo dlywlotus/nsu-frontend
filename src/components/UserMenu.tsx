@@ -3,8 +3,7 @@ import styles from "../styles/UserMenu.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import DarkModeButton from "./DarkModeButton";
-import { AuthContext } from "../Hooks/useAuth";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
+import { api, AuthContext } from "../Hooks/useAuth";
 
 type props = {
   buttonRef: React.MutableRefObject<any>;
@@ -20,12 +19,18 @@ export default function UserMenu({
   const queryClient = useQueryClient();
   const modalRef = useRef<any>();
   const navigate = useNavigate();
-  const { setAuthDetails } = useContext(AuthContext);
+  const { getAuthDetails, setAuthDetails } = useContext(AuthContext);
 
   const onLogout = async () => {
     try {
+      const authDetails = await getAuthDetails();
       // Invalidate refresh token
-      await protectedApi.post("sign_out", {}, { withCredentials: true })
+      await api.post("sign_out", {},
+        {
+          withCredentials: true,
+          headers:
+            { Authorization: `Bearer ${authDetails?.accessToken}` },
+        })
       setAuthDetails(null);
       navigate("/");
       queryClient.clear();

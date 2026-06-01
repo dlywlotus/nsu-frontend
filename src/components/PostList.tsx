@@ -48,9 +48,7 @@ export default function PostList({
           isShowControls={selfPosted}
         />
       ))}
-      <div ref={ref} className={styles.end_of_page}>
-        {hasNextPage || "No more posts"}
-      </div>
+      <div ref={ref} className={styles.end_of_page}></div>
     </div>
   );
 }

@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import LoadingSpinner from "./LoadingSpinner";
 import showError from "../util/showError";
-import { AuthContext } from "../Hooks/useAuth";
+import { api, AuthContext } from "../Hooks/useAuth";
 import { CommentDetails } from "./CommentSection";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
 import { PostDetails } from "./PostList";
 
 type props = {
@@ -25,16 +24,22 @@ type MutationProps = {
 
 export default function CommentBar({ postId, parentCommentId }: props) {
   const [input, setInput] = useState("");
-  const { authDetails } = useContext(AuthContext);
+  const { authDetails, getAuthDetails } = useContext(AuthContext);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: async ({ input, postId, parentCommentId }: MutationProps): Promise<CommentDetails> => {
-      const res = await protectedApi.post("/comment",
+      const authDetails = await getAuthDetails();
+      const res = await api.post("/comment",
         {
           body: input,
           postId,
           parentCommentId
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authDetails?.accessToken}`
+          }
         }
       );
       return res.data;
@@ -63,8 +68,9 @@ export default function CommentBar({ postId, parentCommentId }: props) {
     },
   });
 
-  const onSubmit = (e: any) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
+
     if (!authDetails) {
       return navigate("/auth");
     }

@@ -7,10 +7,9 @@ import TextareaAutosize from "react-textarea-autosize";
 import SelectMenu from "../components/SelectMenu";
 import showError from "../util/showError";
 import { useContext } from "react";
-import { AuthContext } from "../Hooks/useAuth";
+import { api, AuthContext } from "../Hooks/useAuth";
 import axios from "axios";
 import ProtectedPage from "./ProtectedPage";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
 
 //Zod schema
 const formSchema = z.object({
@@ -37,7 +36,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function CreatePostModal() {
   const navigate = useNavigate();
-  const { authDetails } = useContext(AuthContext);
+  const { getAuthDetails } = useContext(AuthContext);
   const {
     reset,
     register,
@@ -58,9 +57,14 @@ export default function CreatePostModal() {
 
   const onSubmit = async (formData: FormData): Promise<any> => {
     try {
-      await protectedApi.post(`${import.meta.env.VITE_SERVER_API_URL}/post`,
-        formData
-      )
+      const authDetails = await getAuthDetails();
+      await api.post(`${import.meta.env.VITE_SERVER_API_URL}/post`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${authDetails?.accessToken}`
+          }
+        })
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error)
       showError("Error creating post");

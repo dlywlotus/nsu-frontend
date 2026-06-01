@@ -1,20 +1,29 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
-import { protectedApi } from "./useAxiosInterceptor";
 import { UserInfo } from "../components/UserDetails";
 import { Page } from "../components/PostDashboard";
 import showError from "../util/showError";
+import { api, AuthContext } from "./useAuth";
+import { useContext } from "react";
 
 const useMutateProfileIcon = () => {
     const queryClient = useQueryClient();
+    const { getAuthDetails } = useContext(AuthContext)
 
     const mutateProfilePic = async (imageBlob: Blob) => {
+        const authDetails = await getAuthDetails();
         const imageFile = new File([imageBlob], "fileToUpload.jpeg", {
             type: imageBlob.type,
             lastModified: new Date().getTime()
         });
         const formData = new FormData();
         formData.append('file', imageFile);
-        const res = await protectedApi.put("user/profile-icon", formData);
+        const res = await api.put("user/profile-icon",
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${authDetails?.accessToken}`
+                }
+            });
         return res.data
     };
 

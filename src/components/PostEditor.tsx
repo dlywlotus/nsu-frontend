@@ -6,10 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import TextareaAutosize from "react-textarea-autosize";
 import axios from "axios";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import showError from "../util/showError";
-import { protectedApi } from "../Hooks/useAxiosInterceptor";
+import { api, AuthContext } from "../Hooks/useAuth";
 
 type props = {
   postContent: PostDetails;
@@ -42,10 +42,18 @@ export default function PostEditor({ postContent }: props) {
   });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { getAuthDetails } = useContext(AuthContext);
 
   const onSubmit = async (formData: FormData): Promise<any> => {
     try {
-      await protectedApi.put("/post", { ...formData, postId: postContent.id }
+      const authDetails = await getAuthDetails();
+      await api.put("/post",
+        { ...formData, postId: postContent.id },
+        {
+          headers: {
+            Authorization: `Bearer ${authDetails?.accessToken}`
+          }
+        }
       );
       queryClient.invalidateQueries({ queryKey: ["post", postContent.id] });
       goToPost();
