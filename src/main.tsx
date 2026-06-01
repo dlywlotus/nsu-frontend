@@ -1,8 +1,7 @@
-import { StrictMode } from "react";
+import { StrictMode, useContext } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import "./main.css";
-import PostExpandViewPage from "./pages/ExpandedPostPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import AuthPage from "./pages/AuthPage";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -16,6 +15,7 @@ import Home from "./pages/Home";
 import MainHeader from "./components/MainHeader";
 import { AuthProvider } from "./Hooks/useAuth";
 import AxiosInterceptorProvider from "./Hooks/useAxiosInterceptor";
+import ExpandedPostPage from "./pages/ExpandedPostPage";
 
 const queryClient = new QueryClient();
 
@@ -59,11 +59,11 @@ const router = createBrowserRouter([
           { path: "create", element: <CreatePostPage /> },
           {
             path: "post/:postId",
-            element: <PostExpandViewPage />,
+            element: <ExpandedPostPage />,
           },
           {
             path: "edit/:postId",
-            element: <PostExpandViewPage isEditing={true} />,
+            element: <ExpandedPostPage isEditing={true} />,
           },
           {
             path: "profile",

@@ -15,7 +15,9 @@ const AxiosInterceptorProvider = ({ children }: { children: React.ReactNode }) =
     const { authDetails, setAuthDetails } = useContext(AuthContext);
 
     useEffect(() => {
-        if (!authDetails?.accessToken) return;
+        if (!authDetails?.accessToken) {
+            return;
+        }
 
         const tokenInjector = protectedApi.interceptors.request.use(
             async function (config) {
@@ -43,7 +45,7 @@ const AxiosInterceptorProvider = ({ children }: { children: React.ReactNode }) =
         );
 
         return () => {
-            api.interceptors.request.eject(tokenInjector);
+            protectedApi.interceptors.request.eject(tokenInjector);
         }
 
     }, [authDetails?.accessToken])

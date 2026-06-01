@@ -1,13 +1,9 @@
 import defaultIcon from '../images/defaultProfileIcon.svg';
 
 const getIcon = (profileIconImageKey: string | null) => {
-  if (profileIconImageKey?.startsWith('blob:')) {
-    return profileIconImageKey;
-  } else if (profileIconImageKey) {
-    return `${import.meta.env.VITE_S3_SERVER}/profile-icons/${profileIconImageKey}`;
-  } else {
-    return defaultIcon;
-  }
+  return profileIconImageKey
+    ? `${import.meta.env.VITE_S3_SERVER}/profile-icons/${profileIconImageKey}`
+    : defaultIcon;
 };
 
 export default getIcon;

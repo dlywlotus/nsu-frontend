@@ -41,7 +41,7 @@ export default function Post({
             <p className={styles.post_body}>{postContent.body}</p>
           </>
         )}
-        <PostSocialCounters postContent={postContent} isExpanded={isExpanded} />
+        <PostSocialCounters postContent={postContent} />
         {isShowControls && <PostControls postId={postContent.id} />}
       </div>
       <div className={styles.back_shadow}></div>

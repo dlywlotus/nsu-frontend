@@ -1,21 +1,29 @@
 import { InfiniteData, useMutation, useQueryClient } from "@tanstack/react-query";
-import showError from "../util/showError";
 import { protectedApi } from "./useAxiosInterceptor";
 import { UserInfo } from "../components/UserDetails";
 import { Page } from "../components/PostDashboard";
+import showError from "../util/showError";
 
-const useMutateUsername = () => {
+const useMutateProfileIcon = () => {
     const queryClient = useQueryClient();
 
+    const mutateProfilePic = async (imageBlob: Blob) => {
+        const imageFile = new File([imageBlob], "fileToUpload.jpeg", {
+            type: imageBlob.type,
+            lastModified: new Date().getTime()
+        });
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        const res = await protectedApi.put("user/profile-icon", formData);
+        return res.data
+    };
+
     const mutation = useMutation({
-        mutationFn: async (username: string) => {
-            const res = await protectedApi.put("/user/name", { username });
-            return res.data;
-        },
+        mutationFn: mutateProfilePic,
         onSuccess: async (newUserData: UserInfo) => {
             queryClient.setQueryData(['userDetails'], (oldUserData: UserInfo) => ({
                 ...oldUserData,
-                ["username"]: newUserData.username,
+                ["profileIconImageKey"]: newUserData.profileIconImageKey
             }));
             queryClient.setQueriesData({ queryKey: ["posts"] }, (data: InfiniteData<Page, unknown> | undefined) => {
                 if (!data) return;
@@ -24,25 +32,25 @@ const useMutateUsername = () => {
                     pages: data?.pages.map(page => ({
                         ...page,
                         posts: (page.posts ?? [])?.map(post => {
+
                             return post.authorId === newUserData.id
                                 ? {
                                     ...post,
-                                    ["username"]: newUserData.username,
+                                    ["profileIconImageKey"]: newUserData.profileIconImageKey,
                                 }
                                 : post;
-
                         }),
                     })),
                 };
             });
         },
-        onError: (error) => {
-            showError("Error updating username");
-            console.log(error);
+        onError: (err) => {
+            showError("Error uploading profile icon");
+            console.log(err);
         },
     });
 
     return mutation;
-};
+}
 
-export default useMutateUsername;
+export default useMutateProfileIcon

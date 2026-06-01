@@ -11,12 +11,14 @@ type AuthContext = {
     authDetails: AuthDetails | null;
     setAuthDetails: React.Dispatch<React.SetStateAction<AuthDetails | null>>;
     isLoading: boolean;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const AuthContext = createContext<AuthContext>({
     authDetails: null,
     setAuthDetails: () => { },
     isLoading: true,
+    setIsLoading: () => { }
 });
 
 
@@ -31,14 +33,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setAuthDetails(res.data);
             } catch (error) {
                 console.log(axios.isAxiosError(error) ? error?.response?.data : error)
+            } finally {
+                setIsLoading(false);
             }
-            setIsLoading(false);
         };
         fetchAuthDetails();
     }, [])
 
     return (
-        <AuthContext.Provider value={{ authDetails, setAuthDetails, isLoading }}>
+        <AuthContext.Provider value={{ authDetails, setAuthDetails, isLoading, setIsLoading }}>
             {children}
         </AuthContext.Provider>
     );

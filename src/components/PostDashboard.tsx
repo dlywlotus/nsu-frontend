@@ -25,14 +25,14 @@ type props = {
 };
 
 export default function PostDashboard({ selfPosted = false }: props) {
-  const { authDetails } = useContext(AuthContext)
+  const { authDetails, isLoading } = useContext(AuthContext)
   const [filter, setFilter] = useState<filterOptions>({
     sortBy: "createdAt",
     category: "ALL",
     searchKeyword: "",
   });
 
-  const fetchPosts = async ({ pageParam }: { pageParam: number }): Promise<Page> => {
+  const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
     try {
       let queryURI = `/posts?page=${pageParam}&size=${10}&sort=${filter.sortBy},desc`
 
@@ -49,7 +49,7 @@ export default function PostDashboard({ selfPosted = false }: props) {
       }
 
       console.log(`Post fetching query: ${queryURI}`)
-      const data = (await protectedApi.get(queryURI)).data;
+      const data = (await protectedApi.get(queryURI, { headers: { Authorization: `Bearer ${authDetails?.accessToken}` } })).data;
       console.log(data)
       return data;
     } catch (error) {
@@ -60,10 +60,10 @@ export default function PostDashboard({ selfPosted = false }: props) {
 
   const { data, isError, isFetching, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
-      queryKey: ["posts", filter, selfPosted, authDetails?.userId],
+      queryKey: ["posts", filter, selfPosted],
       queryFn: fetchPosts,
+      enabled: !isLoading,
       initialPageParam: 0,
-      staleTime: 1000 * 60,  // 1 minute
       getNextPageParam: (lastPage: Page) => {
         // page number is 0 indexed
         return lastPage.curPage >= lastPage.pageCount - 1
@@ -73,6 +73,7 @@ export default function PostDashboard({ selfPosted = false }: props) {
       retry: 3,
       retryDelay: 1000
     });
+
 
   return (
     <>

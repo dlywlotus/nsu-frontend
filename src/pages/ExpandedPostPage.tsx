@@ -11,12 +11,6 @@ type props = {
   isEditing?: boolean;
 };
 
-// Create a useMutateProfileIcon
-// TODO: Add image versioning so image cache is cleared on update
-
-
-// TODO: Set up likes logic 
-// Create a useMutateLikes
 
 export default function ExpandedPostPage({ isEditing = false }: props) {
   const { postId } = useParams();
