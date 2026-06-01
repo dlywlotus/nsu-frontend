@@ -34,7 +34,6 @@ export default function PostDashboard({ selfPosted = false }: props) {
   const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
     const authDetails = await getAuthDetails();
 
-    console.log(authDetails?.accessToken)
     try {
       let queryURI = `/posts?page=${pageParam}&size=${10}&sort=${filter.sortBy},desc`
 
