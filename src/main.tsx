@@ -18,6 +18,8 @@ import ExpandedPostPage from "./pages/ExpandedPostPage";
 
 const queryClient = new QueryClient();
 
+// TODO: Add rate limiting toasts for limit exceeds
+
 const ThemeProvider = () => {
   useTheme(); //dark / light mode
   return (

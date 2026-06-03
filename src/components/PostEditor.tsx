@@ -10,6 +10,7 @@ import { useContext, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import showError from "../util/showError";
 import { api, AuthContext } from "../Hooks/useAuth";
+import showSuccess from "../util/showSuccess";
 
 type props = {
   postContent: PostDetails;
@@ -57,6 +58,7 @@ export default function PostEditor({ postContent }: props) {
       );
       queryClient.invalidateQueries({ queryKey: ["post", postContent.id] });
       goToPost();
+      showSuccess("Your post has been edited")
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error);
       goToPost();

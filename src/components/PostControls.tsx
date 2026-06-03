@@ -3,10 +3,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { api, AuthContext } from "../Hooks/useAuth";
 import { useContext } from "react";
+import showSuccess from "../util/showSuccess";
 
 type props = {
   postId: string;
@@ -27,13 +27,7 @@ export default function PostControls({ postId }: props) {
           }
         });
       queryClient.refetchQueries({ queryKey: ["posts"] });
-      toast.success("Post deleted successfully", {
-        autoClose: 5000,
-        theme: "colored",
-        style: {
-          backgroundColor: "var(--clr-success)",
-        },
-      });
+      showSuccess("Post deleted successfully")
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error);
     }

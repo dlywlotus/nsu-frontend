@@ -4,6 +4,7 @@ import { UserInfo } from "../components/UserDetails";
 import { Page } from "../components/PostDashboard";
 import { useContext } from "react";
 import { api, AuthContext } from "./useAuth";
+import showSuccess from "../util/showSuccess";
 
 const useMutateUsername = () => {
     const queryClient = useQueryClient();
@@ -44,6 +45,7 @@ const useMutateUsername = () => {
                     })),
                 };
             });
+            showSuccess("Successfully changed username")
         },
         onError: (error) => {
             showError("Error updating username");

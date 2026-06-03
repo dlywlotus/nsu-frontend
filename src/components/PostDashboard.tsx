@@ -50,12 +50,16 @@ export default function PostDashboard({ selfPosted = false }: props) {
       }
 
       console.log(`Post fetching query: ${queryURI}`)
-      const data = (await api.get(queryURI,
-        {
+
+      const config = authDetails?.accessToken
+        ? {
           headers: {
             Authorization: `Bearer ${authDetails?.accessToken}`
           }
-        })).data;
+        }
+        : {};
+
+      const data = (await api.get(queryURI, config)).data;
       console.log(data)
       return data;
     } catch (error) {

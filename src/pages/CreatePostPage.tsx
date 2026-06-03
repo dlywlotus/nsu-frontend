@@ -10,6 +10,8 @@ import { useContext } from "react";
 import { api, AuthContext } from "../Hooks/useAuth";
 import axios from "axios";
 import ProtectedPage from "./ProtectedPage";
+import { toast } from "react-toastify";
+import showSuccess from "../util/showSuccess";
 
 //Zod schema
 const formSchema = z.object({
@@ -65,6 +67,7 @@ export default function CreatePostModal() {
             Authorization: `Bearer ${authDetails?.accessToken}`
           }
         })
+      showSuccess("Post created succesfully");
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error)
       showError("Error creating post");
