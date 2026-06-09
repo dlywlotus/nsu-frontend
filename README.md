@@ -1,5 +1,15 @@
 # NSU Forums Frontend
 
-## Image storage
+The front end for the NSU Forums web application
 
-Profile icon images are stored in MinIO, a S3 compatible object storage.
+## Tech stack 
+
+- Routing: React Router
+- Fetching, caching and mutations: Tanstack query
+- Form validation and error handling: React Hook Form
+- Styling: CSS Modules 
+- Api calls: Axios
+
+## Local development
+
+Run `npm i`, followed by `npm run dev` 
