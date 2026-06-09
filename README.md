@@ -1,6 +1,6 @@
 # NSU Forums Frontend
 
-The front end for the NSU Forums web application
+A React frontend for the NSU Forums web application.
 
 ## Tech stack 
 
