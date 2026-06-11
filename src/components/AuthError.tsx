@@ -2,12 +2,13 @@ import styles from "../styles/AuthError.module.css";
 
 type props = {
   isShowError: boolean;
+  authError: string;
 };
 
-export default function AuthError({ isShowError }: props) {
+export default function AuthError({ isShowError, authError }: props) {
   return (
     <div className={styles.error} data-shown={isShowError}>
-      Invalid email or password!
+      {authError}
     </div>
   );
 }

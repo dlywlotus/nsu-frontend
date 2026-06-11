@@ -4,6 +4,8 @@ import { Page } from "../components/PostDashboard";
 import showError from "../util/showError";
 import { api, AuthContext } from "./useAuth";
 import { useContext } from "react";
+import showSuccess from "../util/showSuccess";
+import axios from "axios";
 
 const useMutateProfileIcon = () => {
     const queryClient = useQueryClient();
@@ -52,10 +54,15 @@ const useMutateProfileIcon = () => {
                     })),
                 };
             });
+            showSuccess("Profile icon successfully updated")
         },
         onError: (err) => {
-            showError("Error uploading profile icon");
-            console.log(err);
+            console.log(axios.isAxiosError(err) ? err.response?.data : err);
+            if (axios.isAxiosError(err) && err.status == 429) {
+                showError("Too many requests");
+            } else {
+                showError("Error uploading profile icon");
+            }
         },
     });
 

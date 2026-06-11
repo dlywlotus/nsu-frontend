@@ -8,14 +8,13 @@ import Skeleton from "react-loading-skeleton";
 import { useMediaQuery } from "react-responsive";
 import getIcon from "../util/getIcon";
 import useMutateProfileIcon from "../Hooks/useMutateProfileIcon";
-import showSuccess from "../util/showSuccess";
 
 type props = {
   userInfo: UserInfo | undefined;
 };
 
 export default function ProfileIcon({ userInfo }: props) {
-  const mutateProfileIcon = useMutateProfileIcon();
+  const { mutate, isPending } = useMutateProfileIcon();
   const fileInputRef = useRef<any>(null);
   const [uploadedImg, setUploadedImg] = useState<any>(null);
   const [isCropping, setIsCropping] = useState(false);
@@ -41,8 +40,7 @@ export default function ProfileIcon({ userInfo }: props) {
       setIsCropping(false);
       fileInputRef.current.value = "";
       const croppedImgBlob: any = await getCroppedImageBlob(uploadedImg, crop);
-      mutateProfileIcon.mutate(croppedImgBlob);
-      showSuccess("Profile icon successfully updated")
+      mutate(croppedImgBlob);
     } catch (error) {
       showError("Error uploading profile icon");
       console.log(error);
@@ -52,7 +50,7 @@ export default function ProfileIcon({ userInfo }: props) {
   return (
     <>
       <div className={styles.profile_pic}>
-        {userInfo ? (
+        {userInfo && !isPending ? (
           <>
             <img src={getIcon(userInfo.profileIconImageKey)} alt='default' />
             <input type='file' ref={fileInputRef} onChange={handleImgUpload} />

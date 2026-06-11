@@ -69,7 +69,11 @@ export default function CreatePostModal() {
       showSuccess("Post created succesfully");
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error)
-      showError("Error creating post");
+      if (axios.isAxiosError(error) && error.status == 429) {
+        showError("Too many requests! Try again later.")
+      } else {
+        showError("Error creating post");
+      }
     } finally {
       navigate("/");
     }

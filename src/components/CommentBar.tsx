@@ -9,6 +9,7 @@ import showError from "../util/showError";
 import { api, AuthContext } from "../Hooks/useAuth";
 import { CommentDetails } from "./CommentSection";
 import { PostDetails } from "./PostList";
+import axios from "axios";
 
 type props = {
   postId: string;
@@ -63,8 +64,12 @@ export default function CommentBar({ postId, parentCommentId }: props) {
 
     },
     onError: (error) => {
-      console.log(error)
-      showError("Error creating comment");
+      console.log(axios.isAxiosError(error) ? error?.response?.data : error)
+      if (axios.isAxiosError(error) && error.status == 429) {
+        showError("Too many requests! Try again later.")
+      } else {
+        showError("Error creating comment");
+      }
     },
   });
 

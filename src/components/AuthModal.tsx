@@ -24,6 +24,7 @@ export default function AuthModal() {
   const { setAuthDetails } = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isShowError, setIsShowError] = useState(false);
+  const [authError, setAuthError] = useState("");
 
   const formSchema = z.object({
     username: isLogin
@@ -86,13 +87,18 @@ export default function AuthModal() {
       navigate("/");
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error?.response?.data : error)
+      if (axios.isAxiosError(error) && error.status == 429) {
+        setAuthError("Too many attempts! Try again later.")
+      } else {
+        setAuthError("Invalid email or password!")
+      }
       flashErrorMessage();
     }
   };
   return (
     <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
       <AuthHeader />
-      <AuthError isShowError={isShowError} />
+      <AuthError isShowError={isShowError} authError={authError} />
       <div className={styles.label}>Username</div>
       <input {...register("username")} />
       {errors.username && (
