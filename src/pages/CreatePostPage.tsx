@@ -10,7 +10,6 @@ import { useContext } from "react";
 import { api, AuthContext } from "../Hooks/useAuth";
 import axios from "axios";
 import ProtectedPage from "./ProtectedPage";
-import { toast } from "react-toastify";
 import showSuccess from "../util/showSuccess";
 
 //Zod schema
