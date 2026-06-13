@@ -50,7 +50,7 @@ export default function PostFilterBar({ setFilter }: props) {
         <input
           name='query'
           type='text'
-          maxLength={25}
+          maxLength={50}
           placeholder='Search'
           onChange={e => setInput(e.target.value)}
           value={input}
