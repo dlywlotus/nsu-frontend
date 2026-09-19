@@ -34,16 +34,15 @@
 
 .btn_authenticate {
   border: none;
-  align-self: flex-end;
   background-color: var(--clr-text);
   color: var(--clr-body);
-  height: 2.75rem;
-  width: 100px;
-  transition: all 0.3s ease;
   border-radius: 0.75rem;
   margin-block: 2rem 1rem;
+  padding: 0.75rem;
+  transition: all 0.2s ease;
 }
 
 .btn_authenticate:hover {
   background-color: var(--clr-accent-400);
+  color: var(--clr-text);
 }

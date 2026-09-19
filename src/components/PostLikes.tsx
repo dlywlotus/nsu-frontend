@@ -24,7 +24,7 @@ export default function PostLikes({
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    if (!authDetails) {
+    if (authDetails) {
       navigate("/auth");
     }
 
