@@ -5,7 +5,7 @@ import { AuthContext } from "../Hooks/useAuth"
 const ProtectedPage = ({ children }: { children: React.ReactNode }) => {
     const { authDetails } = useContext(AuthContext);
     if (!authDetails) {
-        return <Navigate to="/auth" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return <>{children}</>;

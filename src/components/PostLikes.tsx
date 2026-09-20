@@ -25,7 +25,7 @@ export default function PostLikes({
   ) => {
     e.stopPropagation();
     if (authDetails) {
-      navigate("/auth");
+      navigate("login");
     }
 
     mutateLikes.mutate({ postId, isLiked })

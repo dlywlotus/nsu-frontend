@@ -3,6 +3,7 @@ import LoadingSpinner from "../components/LoadingSpinner"
 import styles from "../styles/AuthCallbackPage.module.css";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api, AuthContext } from "../Hooks/useAuth";
+import axios from "axios";
 
 const AuthCallbackPage = () => {
   const [searchParams, _] = useSearchParams();
@@ -11,16 +12,21 @@ const AuthCallbackPage = () => {
 
   useEffect(() => {
     const exchangeTokens = async () => {
-      const authCode = searchParams.get("code");
-      const state = searchParams.get("state");
-      if (state != localStorage.getItem("state")) {
-        console.log("CSRF attack attempt detected");
-        return;
-      }
-      const res = await api.post("token", { authCode, clientId: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID }, { withCredentials: true, });
-      setAuthDetails({ accessToken: res.data?.accessToken, userId: res.data?.userId })
+      try {
+        const authCode = searchParams.get("code");
+        const state = searchParams.get("state");
+        if (state != localStorage.getItem("state")) {
+          console.log("CSRF attack attempt detected");
+          return;
+        }
+        const res = await api.post("token", { authCode, clientId: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID }, { withCredentials: true, });
+        setAuthDetails({ accessToken: res.data?.accessToken, userId: res.data?.userId })
 
-      navigate('/');
+      } catch (error) {
+        console.log(axios.isAxiosError(error) ? error?.response?.data : error)
+      } finally {
+        navigate('/');
+      }
     }
 
     exchangeTokens();
