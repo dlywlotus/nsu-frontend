@@ -18,7 +18,7 @@ export default function UserButton({ }: props) {
   };
 
   const goToAuth = () => {
-    navigate("/auth");
+    navigate("/login");
   };
 
   return (

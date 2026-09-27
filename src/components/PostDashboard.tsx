@@ -32,9 +32,9 @@ export default function PostDashboard({ selfPosted = false }: props) {
   });
 
   const fetchPosts = async ({ pageParam }: { pageParam: number }) => {
-    const authDetails = await getAuthDetails();
 
     try {
+      const authDetails = await getAuthDetails();
       let queryURI = `/posts?page=${pageParam}&size=${10}&sort=${filter.sortBy},desc`
 
       if (filter.searchKeyword !== "") {
@@ -49,8 +49,6 @@ export default function PostDashboard({ selfPosted = false }: props) {
         queryURI += `&authorId=${authDetails?.userId}`
       }
 
-      console.log(`Post fetching query: ${queryURI}`)
-
       const config = authDetails?.accessToken
         ? {
           headers: {
@@ -64,7 +62,7 @@ export default function PostDashboard({ selfPosted = false }: props) {
       return data;
     } catch (error) {
       console.log(axios.isAxiosError(error) ? error.response?.data : error);
-      throw new Error("Failed to fetch posts")
+      throw error;
     }
   };
 
