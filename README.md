@@ -12,6 +12,13 @@ A React frontend for the NSU Forums web application.
 
 ## Local development
 
-Refer to `.env.example` and make a `.env` file with those variables
+1. Refer to `.env.example` and create a `.env` file with those variables
+2. Run `npm i`, followed by `npm run dev`
 
-Run `npm i`, followed by `npm run dev`
+## Deployment on EC2
+
+1. Refer to `.env.example` and create a `.env` file with those variables
+2. Add the Build the image with
+   `docker build -t dlywlotus/nsu-frontend:tagname .`
+3. Push the image to docker hub with
+   `docker push dlywlotus/nsu-frontend:tagname`
