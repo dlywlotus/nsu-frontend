@@ -78,7 +78,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+], {
+  basename: import.meta.env.VITE_CLIENT_BASE_NAME
+}
+);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
