@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 export type AuthDetails = {
     userId: string;
@@ -9,11 +10,9 @@ export type AuthDetails = {
 }
 
 type AuthContext = {
-    authDetails: AuthDetails | null
+    authDetails: AuthDetails | null;
     getAuthDetails: () => Promise<AuthDetails | null>;
     setAuthDetails: React.Dispatch<React.SetStateAction<AuthDetails | null>>;
-    isLoading: boolean;
-    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const api = axios.create({
@@ -23,15 +22,14 @@ export const api = axios.create({
 export const AuthContext = createContext<AuthContext>({
     authDetails: null,
     getAuthDetails: () => new Promise((resolve, _) => resolve(null)),
-    setAuthDetails: () => { },
-    isLoading: true,
-    setIsLoading: () => { }
+    setAuthDetails: () => { }
 });
 
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [authDetails, setAuthDetails] = useState<AuthDetails | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const navigate = useNavigate();
 
 
     // Returns the authentication details of the user, refreshing the access token if it has expired
@@ -47,10 +45,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Check if access token has expired - decoded.exp is in seconds 
         if (Date.now() > (decodedToken.exp - 60) * 1000) {
             console.log("Access token expired")
-            const res = await api.post("refresh_token", {}, { withCredentials: true })
-            const newAuthDetails: AuthDetails = res.data;
-            setAuthDetails(newAuthDetails);
-            return newAuthDetails;
+            try {
+                const res = await api.post("refresh_token", {}, { withCredentials: true })
+                const newAuthDetails: AuthDetails = res.data;
+                setAuthDetails(newAuthDetails);
+                return newAuthDetails;
+            } catch (error) {
+                navigate("/login")
+                throw error;
+            }
         } else {
             return authDetails;
         }
@@ -78,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ authDetails, getAuthDetails, setAuthDetails, isLoading, setIsLoading }}>
+        <AuthContext.Provider value={{ authDetails, getAuthDetails, setAuthDetails }}>
             {children}
         </AuthContext.Provider>
     );

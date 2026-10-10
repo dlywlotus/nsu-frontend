@@ -77,7 +77,7 @@ export default function CommentBar({ postId, parentCommentId }: props) {
     e.preventDefault();
 
     if (!authDetails) {
-      return navigate("/auth");
+      return navigate("/login");
     }
     if (input === "") return;
     mutation.mutate({ input, postId, parentCommentId });

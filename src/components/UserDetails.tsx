@@ -23,7 +23,6 @@ export default function UserDetails({ }: props) {
         Authorization: `Bearer ${authDetails?.accessToken}`
       }
     });
-    console.log(data);
     return data;
   };
 

@@ -43,7 +43,7 @@ export default function UsernameEditor({ userData }: props) {
 
     confirmAlert({
       title: "Confirmation",
-      message: "Your login username will change. Are you sure you want to continue?",
+      message: "Are you sure you want to change your username?",
       buttons: [
         {
           label: "Yes",

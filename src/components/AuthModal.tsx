@@ -1,138 +1,30 @@
 import styles from "../styles/AuthModal.module.css";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import AuthCallToAction from "./AuthCallToAction";
 import AuthHeader from "./AuthHeader";
-import AuthError from "./AuthError";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import PulseLoader from "react-spinners/PulseLoader";
-import { api, AuthContext } from "../Hooks/useAuth";
-import axios from "axios";
-
-// Infer form schema type
-type FormData = {
-  username: string;
-  email: string;
-  password: string;
-};
-
 
 export default function AuthModal() {
-  const navigate = useNavigate();
-  const { setAuthDetails } = useContext(AuthContext);
-  const [isLogin, setIsLogin] = useState(true);
-  const [isShowError, setIsShowError] = useState(false);
-  const [authError, setAuthError] = useState("");
+  const navToGoogleLoginPage = () => {
+    const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+    const state = crypto.randomUUID();
+    localStorage.setItem("state", state);
 
-  const formSchema = z.object({
-    username: isLogin
-      ? z.string().optional()
-      : z
-        .string()
-        .min(3, "Min length: 3 characters")
-        .max(15, "Max length: 15 characters"),
-    password: z
-      .string()
-      .min(6, "Min length: 6 characters")
-      .max(30, "Max length: 30 characters"),
-  });
+    url.search = new URLSearchParams({
+      response_type: "code",
+      scope: "openid profile email",
+      client_id: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID,
+      nonce: crypto.randomUUID(),
+      redirect_uri: `${import.meta.env.VITE_CLIENT_SERVER_URL}/auth-callback`,
+      state: state
+    }).toString();
 
-  const {
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(formSchema),
-  });
+    window.location.href = url.toString();
+  }
 
-  const flashErrorMessage = () => {
-    setIsShowError(true);
-    setTimeout(() => setIsShowError(false), 2000);
-  };
 
-  // Errors are caught in onSubmit below
-  const onLogin = async (formData: FormData) => {
-    await signIn(formData);
-    navigate("/");
-  };
-
-  // Errors are caught in onSubmit below
-  const onSignUp = async (formData: FormData) => {
-    await api.post("/sign_up", {
-      "username": formData.username,
-      "password": formData.password
-    });
-    await signIn(formData);
-    navigate("/");
-  };
-
-  const signIn = async (formData: FormData) => {
-    const res = await api.post(
-      "/sign_in",
-      {
-        "username": formData.username,
-        "password": formData.password
-      },
-      { withCredentials: true }
-    );
-    setAuthDetails(res.data);
-  };
-
-  const onSubmit = async (formData: FormData) => {
-    try {
-      isLogin ? await onLogin(formData) : await onSignUp(formData);
-      navigate("/");
-    } catch (error) {
-      console.log(axios.isAxiosError(error) ? error?.response?.data : error)
-      if (axios.isAxiosError(error) && error.status == 429) {
-        setAuthError("Too many attempts! Try again later.")
-      } else {
-        setAuthError("Invalid email or password!")
-      }
-      flashErrorMessage();
-    }
-  };
   return (
-    <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
+    <div className={styles.container} >
       <AuthHeader />
-      <AuthError isShowError={isShowError} authError={authError} />
-      <div className={styles.label}>Username</div>
-      <input {...register("username")} />
-      {errors.username && (
-        <p className={styles.err}>{errors.username.message}</p>
-      )}
-      <div className={styles.label}>Password</div>
-      <input type='password' {...register("password")} />
-      {errors.password && (
-        <p className={styles.err}>{errors.password.message}</p>
-      )}
-      <button
-        type='submit'
-        className={styles.btn_authenticate}
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? (
-          <PulseLoader
-            loading={isSubmitting}
-            size={8}
-            color='var(--clr-body)'
-            cssOverride={{ marginTop: ".1rem" }}
-            speedMultiplier={1}
-          />
-        ) : isLogin ? (
-          "Log in"
-        ) : (
-          "Sign up"
-        )}
-      </button>
-      <AuthCallToAction
-        isLogin={isLogin}
-        setIsLogin={setIsLogin}
-        reset={reset}
-      />
-    </form>
+      <button className={styles.btn_authenticate} onClick={navToGoogleLoginPage}>Continue with Google</button>
+    </div>
   );
 }
+

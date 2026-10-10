@@ -15,22 +15,23 @@ import Home from "./pages/Home";
 import MainHeader from "./components/MainHeader";
 import { AuthProvider } from "./Hooks/useAuth";
 import ExpandedPostPage from "./pages/ExpandedPostPage";
+import AuthCallbackPage from "./pages/AuthCallbackPage";
 
 const queryClient = new QueryClient();
 
-// TODO: Add rate limiting toasts for limit exceeds
-
-const ThemeProvider = () => {
+const ThemeAndAuthProvider = () => {
   useTheme(); //dark / light mode
   return (
-    <SkeletonTheme
-      baseColor='var(--clr-body)'
-      highlightColor='var(--clr-highlight)'
-      duration={1}
-    >
-      <Outlet />
-      <ToastContainer />
-    </SkeletonTheme>
+    <AuthProvider>
+      <SkeletonTheme
+        baseColor='var(--clr-body)'
+        highlightColor='var(--clr-highlight)'
+        duration={1}
+      >
+        <Outlet />
+        <ToastContainer />
+      </SkeletonTheme>
+    </AuthProvider>
   );
 };
 
@@ -46,7 +47,7 @@ const Layout = () => {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <ThemeProvider />,
+    element: <ThemeAndAuthProvider />,
     errorElement: <NotFoundPage />,
     children: [
       {
@@ -73,9 +74,13 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/auth",
+        path: "/login",
         element: <AuthPage />,
       },
+      {
+        path: "/auth-callback",
+        element: <AuthCallbackPage />
+      }
     ],
   },
 ], {
@@ -85,10 +90,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </StrictMode>
 );
